@@ -4,7 +4,7 @@ const CartSchema = new mongoose.Schema(
   {
     coffeeId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "coffee", // Harus sama dengan model name Coffee
+      ref: "coffee",
       required: true,
     },
     quantity: {
@@ -14,7 +14,7 @@ const CartSchema = new mongoose.Schema(
     },
   },
   {
-    collection: "carts", // koreksi dari collation jadi collection
+    collection: "carts",
     timestamps: true,
   }
 );

@@ -20,6 +20,7 @@ const CoffeeSchema = new mongoose.Schema(
     },
   },
   {
+    collection: "coffees",
     timestamps: true,
   }
 );

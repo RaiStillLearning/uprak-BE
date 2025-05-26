@@ -1,29 +1,40 @@
 const express = require("express");
-const router = express.Router();
+const app = express();
+const mongoose = require("mongoose");
+const cors = require("cors");
+const dotenv = require("dotenv");
+dotenv.config();
 
-const Cart = require("../models/Cart");
+// Import routes
+const coffeeRoutes = require("./routes/coffeeRoutes");
+const cartRoutes = require("./routes/cartRoutes");
 
-// GET all cart items with coffee details
-router.get("/", async (req, res) => {
-  try {
-    const cartItems = await Cart.find().populate("coffeeId");
-    res.json(cartItems);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+// Middleware
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Ganti dengan URL frontend kamu
+  })
+); // biar bisa diakses dari frontend
+
+app.use(express.json()); // agar req.body bisa terbaca
+
+// Koneksi MongoDB
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
+
+// Route root
+app.get("/", (req, res) => {
+  res.send("Coffee kamu sedang diseduh king!");
 });
 
-// GET single cart item by cart id
-router.get("/:id", async (req, res) => {
-  try {
-    const cartItem = await Cart.findById(req.params.id).populate("coffeeId");
-    if (!cartItem) {
-      return res.status(404).json({ error: "Cart item not found" });
-    }
-    res.json(cartItem);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+// Routes API
+app.use("/api/coffee", coffeeRoutes);
+app.use("/api/cart", cartRoutes);
 
-module.exports = router;
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server is running on port ${PORT}`);
+  console.log(`🌐 http://localhost:${PORT}`);
+});
