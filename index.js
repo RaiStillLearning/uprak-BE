@@ -12,7 +12,7 @@ const cartRoutes = require("./routes/cartRoutes");
 // Middleware
 app.use(
   cors({
-    origin: "https://tugas-uprak.vercel.app/", // Ganti dengan URL frontend kamu
+    origin: "https://tugas-uprak.vercel.app", // Ganti dengan URL frontend kamu
   })
 ); // biar bisa diakses dari frontend
 
